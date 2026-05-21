@@ -33,6 +33,12 @@ class CatSerializer(serializers.ModelSerializer):
         model = Cat
         fields = ('id', 'name', 'color', 'birth_year', 'achievements', 'owner',
                   'age')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Cat.objects.all(),
+                fields=('name', 'owner'),
+            ),
+        ]
 
     def get_age(self, obj):
         return dt.datetime.now().year - obj.birth_year
